@@ -8,7 +8,7 @@ This project implements an AutoRegressive Integrated Moving Average with Exogeno
 
 This project uses the Beijing PM2.5 dataset, which is an air quality time-series dataset collected in Beijing between 2010 and 2014. The dataset contains 43824 hourly observations across 12 variables, including PM2.5 concentration and related weather variables. The dataset is publicly available at: <https://archive.ics.uci.edu/dataset/381/beijing+pm2+5+data>
 
-The outcome variable of interest is **pm25**, representing the PM2.5 concentration. The remaining variables, excluding the date and time variables (*year, month, day,* and *hour*), were treated as external predictors in the ARIMAX model.
+The outcome variable of interest is *pm25*, representing the PM2.5 concentration. The remaining variables, excluding the date and time variables (*year, month, day,* and *hour*), were treated as external predictors in the ARIMAX model.
 
 For summary statistics, the categorical combined wind direction variable *cbwd* was converted to a factor variable. Exploratory data analysis indicates that PM2.5 concentration (*pm25*) and cumulative wind speed (*iws*) are positively skewed due to occasional extreme values, while atmospheric pressure (*pres*) remains relatively stable. Temperature (*temp*) and dew point (*dewp*) exhibit considerable variation without strong skewness. The combined wind direction (*cbwd*) is dominated by southeast and northwest winds. Cumulated hours of snow (*is*) and rain (*ir*) are heavily concentrated at zero, indicating that snowfall and rainfall events are rare during the observation period.
 
@@ -42,7 +42,7 @@ However, the remainder component still displays non-constant variance and severa
 
 ***Figure 3:** ACF of the original training PM2.5 series*
 
-Although the p-value of the Augmented Dickey–Fuller (ADF) test was smaller than 0.01, indicating stationarity, the ACF values decayed slowly toward zero, suggesting non-stationarity. Therefore, first-order differencing was applied to the PM2.5 series.
+Although the p-value of the Augmented Dickey-Fuller (ADF) test was smaller than 0.01, indicating stationarity, the ACF values decayed slowly toward zero, suggesting non-stationarity. Therefore, first-order differencing was applied to the PM2.5 series.
 
 First-order differencing produced a more stationary PM2.5 series with a nearly constant mean of 0, making it more suitable for ARIMAX modeling, although occasional large fluctuations remained. After differencing, the ADF test again indicated stationarity. In addition, the ACF values dropped close to 0 after only the first 2 lags, further supporting stationarity.
 
@@ -50,15 +50,15 @@ Although the differenced series appeared stationary with a nearly constant mean 
 
 The *cwd* factor variable was converted into dummy variables for use as external predictors. Then, an ARIMAX(p=1, d=1, q=2) model (without seasonal terms) was fitted to the training set, using *pm25* as the response variable and meteorological variables (*dewp, temp, pres, cbwd, iws, is,* and *ir*) as external predictors.
 
-Residual diagnostics showed that the residuals were centered around 0 and that most autocorrelation was removed. Although the Ljung–Box test indicated some remaining autocorrelation, its magnitude was generally small based on the ACF analysis. Overall, the diagnostics suggested that the ARIMAX model captured the major structure of the PM2.5 series, with only weak residual dependence remaining.
+Residual diagnostics showed that the residuals were centered around 0 and that most autocorrelation was removed. Although the Ljung-Box test indicated some remaining autocorrelation, its magnitude was generally small based on the ACF analysis. Overall, the diagnostics suggested that the ARIMAX model captured the major structure of the PM2.5 series, with only weak residual dependence remaining.
 
-Forecasting performance was evaluated using **24-step forecasting**, where the model's internal state was updated every 24 hours. Root Mean Squared Error (RMSE), Mean Absolute Error (MAE), and Mean Absolute Scaled Error (MASE) were used as evaluation metrics. Multi-step forecasting results were additionally reported for comparison.
+Forecasting performance was evaluated using *24-step forecasting*, where the model's internal state was updated every 24 hours. Root Mean Squared Error (RMSE), Mean Absolute Error (MAE), and Mean Absolute Scaled Error (MASE) were used as evaluation metrics. Multi-step forecasting results were additionally reported for comparison.
 
 ## Results
 
-> Suppose ARIMAX forecasting starts after time T. In multi-step forecasting, the model is fitted once using the observed values up to time point T and is not updated thereafter. Multi-step forecasting uses the real observations up to time T, as well as the predicted values of time points T+1, … T+k, in order to forecast the observation of time point T+k+1. In contrast, one-step forecasting only uses the real observations up to time point T+k in order to forecast the observation of time point T+k+1, with the model being updated after each newly observed value becomes available. Since real observations can only be revealed one by one in time, one-step forecasting is more time consuming, but tends to be more accurate.
+> Suppose ARIMAX forecasting starts after time T. In **multi-step forecasting**, the model is fitted once using the observed values up to time point T and is not updated thereafter. Multi-step forecasting uses the real observations up to time T, as well as the predicted values of time points T+1, … T+k, in order to forecast the observation of time point T+k+1. In contrast, **one-step forecasting** only uses the real observations up to time point T+k in order to forecast the observation of time point T+k+1, with the model being updated after each newly observed value becomes available. Since real observations can only be revealed one by one in time, one-step forecasting is more time consuming, but tends to be more accurate.
 >
-> As a compromise between these two approaches, h-step forecasting (h\>1) uses all real observations up to time T to forecast the observations at time points T+1, …, T+h. Once the actual observations for these m time periods become available, the model is updated and used to forecast the next h observations. Therefore, h-step forecasting generally produces more accurate forecasts while requiring less computational effort than one-step forecasting.
+> As a compromise between these two approaches, **h-step forecasting** (h\>1) uses all real observations up to time T to forecast the observations at time points T+1, …, T+h. Once the actual observations for these h time periods become available, the model is updated and used to forecast the next h observations. Therefore, h-step forecasting generally produces more accurate forecasts while requiring less computational effort than one-step forecasting.
 >
 > During one-step (or h-step) forecasting for ARIMAX, it’s possible to refit the model at every step (or every h steps) or just update the internal state (Kalman filter) instead to reduce runtime.
 
@@ -66,7 +66,7 @@ Model performance was first evaluated using multi-step forecasting, which yielde
 
 For the h-step forecasting strategy, h = 24 was selected since updating the model every few hours (by choosing a shorter forecasting horizon such as h = 1, 6, or 12) is unrealistic in practice. When the forecasting horizon is too short, the forecasting task becomes less meaningful and more closely resembles a tracking task.
 
-Under the 24-step forecasting strategy, the ARIMAX(1,1,2) model achieved a **training RMSE of 65.55 and MAE of 44.80**, while the corresponding **test RMSE and MAE were 60.22 and 41.88**, respectively. There was only a small difference between the error measures on the training and test sets, indicating good generalization performance with no evidence of overfitting. Interestingly, the model achieved slightly better performance on the test set than on the training set, likely due to differences in the data characteristics of the two time periods.
+Under the 24-step forecasting strategy, the ARIMAX(1,1,2) model achieved a *training RMSE of 65.55 and MAE of 44.80*, while the corresponding *test RMSE and MAE were 60.22 and 41.88*, respectively. There was only a small difference between the error measures on the training and test sets, indicating good generalization performance with no evidence of overfitting. Interestingly, the model achieved slightly better performance on the test set than on the training set, likely due to differences in the data characteristics of the two time periods.
 
 The test MAE value (41.88) was about 42.4% of the mean PM2.5 concentration in the training data (98.78), while the test RMSE value (60.22) was about 65.9% of the training standard deviation (91.42). This suggested that although the model captured a substantial portion of the overall variability, it still left a large fraction of short-term fluctuations unexplained. However, these results were substantially better than those obtained under the multi-step forecasting setup (test RMSE = 121.32 and MAE = 102.65).
 
