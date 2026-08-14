@@ -10,7 +10,7 @@ This project uses the Beijing PM2.5 dataset, which is an air quality time-series
 
 The outcome variable of interest is *pm25*, representing the PM2.5 concentration. The remaining variables, excluding the date and time variables (*year, month, day,* and *hour*), were treated as external predictors in the ARIMAX model.
 
-For summary statistics, the categorical combined wind direction variable *cbwd* was converted to a factor variable. Exploratory data analysis indicates that PM2.5 concentration (*pm25*) and cumulative wind speed (*iws*) are positively skewed due to occasional extreme values, while atmospheric pressure (*pres*) remains relatively stable. Temperature (*temp*) and dew point (*dewp*) exhibit considerable variation without strong skewness. The combined wind direction (*cbwd*) is dominated by southeast and northwest winds. Cumulated hours of snow (*is*) and rain (*ir*) are heavily concentrated at zero, indicating that snowfall and rainfall events are rare during the observation period.
+Exploratory data analysis indicates that PM2.5 concentration (*pm25*) and cumulative wind speed (*iws*) are positively skewed due to occasional extreme values, while atmospheric pressure (*pres*) remains relatively stable. Temperature (*temp*) and dew point (*dewp*) exhibit considerable variation without strong skewness. The combined wind direction (*cbwd*) is dominated by southeast and northwest winds. Cumulated hours of snow (*is*) and rain (*ir*) are heavily concentrated at zero, indicating that snowfall and rainfall events are rare during the observation period.
 
 Moreover, the negative correlation between PM2.5 concentration (*pm25*) and cumulative wind speed (*iws*) suggests that higher wind speeds may contribute to the dispersion of air pollutants.
 
