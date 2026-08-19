@@ -24,13 +24,13 @@ Variance Inflation Factor (VIF) analysis of the numeric external predictors indi
 
 The training and test PM2.5 concentration data were converted into time series objects with a seasonal frequency of 24 to capture the daily pattern in the hourly observations.
 
-![](images/original_pm25.jpg "Original PM2.5 Series"){width="551"}
+![](images/original_pm25.jpg "Original PM2.5 Series")
 
 ***Figure 1:** The original training PM2.5 series*
 
 The original training PM2.5 series plot shows that PM2.5 concentration fluctuates substantially over time, with several sharp spikes indicating periods of exceptionally high air pollution. Although no clear upward or downward trend is observed, periods of elevated PM2.5 concentrations appear repeatedly across different years, suggesting possible seasonal or cyclical patterns. Furthermore, the mean and variance of the series don’t appear constant over time, which indicates that the series may be non-stationary.
 
-![](images/decomp_original_pm25_trend.jpg "Original PM2.5 Trend"){width="549"}![](images/decomp_original_pm25_seasonal.jpg "Original PM2.5 Seasonal"){width="549"}![](images/decomp_original_pm25_remainder.jpg "Original PM2.5 Remainder"){width="548"}
+![](images/decomp_original_pm25_trend.jpg "Original PM2.5 Trend")![](images/decomp_original_pm25_seasonal.jpg "Original PM2.5 Seasonal")![](images/decomp_original_pm25_remainder.jpg "Original PM2.5 Remainder")
 
 ***Figure 2:** The original training PM2.5 series decomposition*
 
@@ -38,7 +38,7 @@ Time-series decomposition showed no clear upward or downward trend in the trend 
 
 However, the remainder component still displays non-constant variance and several large spikes, which may indicate the presence of outliers or short-term events not explained by the trend and seasonal components.
 
-![](images/acf_original_pm25.jpg "ACF of the original PM2.5 series"){width="548"}
+![](images/acf_original_pm25.jpg "ACF of the original PM2.5 series")
 
 ***Figure 3:** ACF of the original training PM2.5 series*
 
@@ -58,7 +58,7 @@ Forecasting performance was evaluated using *24-step forecasting*, where the mod
 
 > Suppose ARIMAX forecasting starts after time T. In **multi-step forecasting**, the model is fitted once using the observed values up to time point T and is not updated thereafter. Multi-step forecasting uses the real observations up to time T, as well as the predicted values of time points T+1, … T+k, in order to forecast the observation of time point T+k+1. In contrast, **one-step forecasting** only uses the real observations up to time point T+k in order to forecast the observation of time point T+k+1, with the model being updated after each newly observed value becomes available. Since real observations can only be revealed one by one in time, one-step forecasting is more time consuming, but tends to be more accurate.
 >
-> As a compromise between these two approaches, **h-step forecasting** (h\>1) uses all real observations up to time T to forecast the observations at time points T+1, …, T+h. Once the actual observations for these h time periods become available, the model is updated and used to forecast the next h observations. Therefore, h-step forecasting generally produces more accurate forecasts while requiring less computational effort than one-step forecasting.
+> As a compromise between these two approaches, **h-step forecasting** (h\>1) uses all real observations up to time T to forecast the observations at time points T+1, …, T+h. Once the actual observations for these h time periods become available, the model is updated and used to forecast the next h observations. Therefore, h-step forecasting generally produces more accurate forecasts than multi-step forecasting while requiring less computational effort than one-step forecasting.
 >
 > During one-step (or h-step) forecasting for ARIMAX, it’s possible to refit the model at every step (or every h steps) or just update the internal state (Kalman filter) instead to reduce runtime.
 
@@ -70,7 +70,7 @@ Under the 24-step forecasting strategy, the ARIMAX(1,1,2) model achieved a *trai
 
 The test MAE value (41.88) was about 42.4% of the mean PM2.5 concentration in the training data (98.78), while the test RMSE value (60.22) was about 65.9% of the training standard deviation (91.42). This suggested that although the model captured a substantial portion of the overall variability, it still left a large fraction of short-term fluctuations unexplained. However, these results were substantially better than those obtained under the multi-step forecasting setup (test RMSE = 121.32 and MAE = 102.65).
 
-![](images/test_forecasted_vs_actual_pm25.jpg "Forecasted vs actual PM2.5 values on test set"){width="547"}
+![](images/test_forecasted_vs_actual_pm25.jpg "Forecasted vs actual PM2.5 values on test set")
 
 ***Figure 4:** Forecasted-vs-actual PM2.5 values on test set*
 
